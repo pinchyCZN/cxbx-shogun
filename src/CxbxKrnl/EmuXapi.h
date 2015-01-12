@@ -34,7 +34,11 @@
 #ifndef EMUXAPI_H
 #define EMUXAPI_H
 
+#ifdef D3D9
+#include <dxerr.h>
+#else
 #include <dxerr8.h>
+#endif
 
 // ******************************************************************
 // * calling conventions

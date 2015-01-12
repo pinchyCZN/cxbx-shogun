@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8.00"
 	Name="Cxbx"
 	ProjectGUID="{E7A72D3D-5810-4078-A243-348B59726365}"
-	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -48,8 +47,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src\Common,..\..\src,..\..\src\Common\Win32"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="..\..\src\Common;..\..\src;..\..\src\Common\Win32;&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x500;D3D9"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -77,19 +76,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libjpeg.lib d3d8.lib dinput8.lib dxguid.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="libjpeg.lib d3d9.lib dinput8.lib dxguid.lib odbc32.lib odbccp32.lib"
 				OutputFile=".\..\..\bin\debug/Cxbx.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\import\libjpeg\win32\lib"
+				AdditionalLibraryDirectories="..\..\import\libjpeg\win32\lib;&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Lib\x86&quot;"
 				IgnoreDefaultLibraryNames="msvcrt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\bin\debug/Cxbx.pdb"
 				GenerateMapFile="true"
 				MapFileName=".\..\..\bin\debug/Cxbx.map"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -111,6 +108,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -191,8 +191,6 @@
 				GenerateMapFile="true"
 				MapFileName=".\..\..\bin\release/Cxbx.map"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -214,6 +212,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

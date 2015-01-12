@@ -40,7 +40,11 @@
 #include "Emu.h"
 
 #define DIRECTDRAW_VERSION 0x0700
+#ifdef D3D9
+#include <d3d9caps.h>
+#else
 #include <ddraw.h>
+#endif
 
 // initialize direct3d
 extern VOID EmuD3DInit(Xbe::Header *XbeHeader, uint32 XbeHeaderSize);

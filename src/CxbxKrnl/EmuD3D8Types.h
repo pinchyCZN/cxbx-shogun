@@ -41,9 +41,9 @@
 
 #pragma comment (lib, "d3d9.lib")
 #pragma comment (lib, "d3dx9.lib")
-#pragma comment (lib, "dxerr9.lib")
+#pragma comment (lib, "dxerr.lib")
 #pragma comment (lib, "dxguid.lib")
-#pragma comment (lib, "ddraw.lib")
+//#pragma comment (lib, "ddraw.lib")
 #else
 #define DIRECT3D_VERSION 0x0800
 #include <d3d8.h>
