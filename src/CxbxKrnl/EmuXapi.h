@@ -34,7 +34,7 @@
 #ifndef EMUXAPI_H
 #define EMUXAPI_H
 
-#include <dxerr8.h>
+#include <dxerr.h>
 
 // ******************************************************************
 // * calling conventions
@@ -111,6 +111,7 @@ typedef DWORD (WINAPI *PTHREAD_START_ROUTINE)
     LPVOID lpThreadParameter
 );
 typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
+
 
 // ******************************************************************
 // * pfRtlCreateHeap

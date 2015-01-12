@@ -37,7 +37,8 @@
 #include "DlgVideoConfig.h"
 #include "ResCxbx.h"
 
-#include <d3d8.h>
+//#include <d3d8.h>
+#include <d3d9.h>
 
 /*! windows dialog procedure */
 static INT_PTR CALLBACK DlgVideoConfigProc(HWND hWndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -315,60 +316,63 @@ VOID RefreshDirect3DDevice()
 
         /*! enumerate display modes */
         {
-            uint32 dwAdapterModeCount = g_pD3D8->GetAdapterModeCount(g_XBVideo.GetDisplayAdapter());
+			const XTL::D3DFORMAT formats[6]={XTL::D3DFMT_A1R5G5B5,XTL::D3DFMT_A2R10G10B10,XTL::D3DFMT_A8R8G8B8,XTL::D3DFMT_R5G6B5,XTL::D3DFMT_X1R5G5B5,XTL::D3DFMT_X8R8G8B8};
+			int i;
+			SendMessage(g_hVideoResolution, CB_ADDSTRING, 0, (LPARAM)"Automatic (Default)");
+			for(i=0;i<sizeof(formats)/sizeof(XTL::D3DFORMAT);i++){
 
-            SendMessage(g_hVideoResolution, CB_ADDSTRING, 0, (LPARAM)"Automatic (Default)");
+				uint32 dwAdapterModeCount = g_pD3D8->GetAdapterModeCount(g_XBVideo.GetDisplayAdapter(),formats[i]);
+				/*! enumerate through available adapter modes */
+				for(uint32 v=0;v<dwAdapterModeCount;v++)
+				{
+					char *szFormat = 0;
 
-            /*! enumerate through available adapter modes */
-            for(uint32 v=0;v<dwAdapterModeCount;v++)
-            {
-                char *szFormat = 0;
+					XTL::D3DDISPLAYMODE displayMode;
 
-                XTL::D3DDISPLAYMODE displayMode;
+					g_pD3D8->EnumAdapterModes(g_XBVideo.GetDisplayAdapter(),formats[i], v, &displayMode);
 
-                g_pD3D8->EnumAdapterModes(g_XBVideo.GetDisplayAdapter(), v, &displayMode);
+					switch(formats[i])
+					{
+						case XTL::D3DFMT_X1R5G5B5:
+							szFormat = "16bit x1r5g5b5";
+							break;
+						case XTL::D3DFMT_R5G6B5:
+							szFormat = "16bit r5g6r5";
+							break;
+						case XTL::D3DFMT_X8R8G8B8:
+							szFormat = "32bit x8r8g8b8";
+							break;
+						case XTL::D3DFMT_A8R8G8B8:
+							szFormat = "32bit a8r8g8b8";
+							break;
+						default:
+							szFormat = "Unknown";
+							break;
+					};
 
-                switch(displayMode.Format)
-                {
-                    case XTL::D3DFMT_X1R5G5B5:
-                        szFormat = "16bit x1r5g5b5";
-                        break;
-                    case XTL::D3DFMT_R5G6B5:
-                        szFormat = "16bit r5g6r5";
-                        break;
-                    case XTL::D3DFMT_X8R8G8B8:
-                        szFormat = "32bit x8r8g8b8";
-                        break;
-                    case XTL::D3DFMT_A8R8G8B8:
-                        szFormat = "32bit a8r8g8b8";
-                        break;
-                    default:
-                        szFormat = "Unknown";
-                        break;
-                };
+					/*! add display mode to list */
+					{
+						char szBuffer[260];
 
-                /*! add display mode to list */
-                {
-                    char szBuffer[260];
+						if(displayMode.RefreshRate == 0)
+						{
+							sprintf(szBuffer, "%d x %d %s", displayMode.Width, displayMode.Height, szFormat);
+						}
+						else
+						{
+							sprintf(szBuffer, "%d x %d %s (%d hz)", displayMode.Width, displayMode.Height, szFormat, displayMode.RefreshRate);
+						}
 
-                    if(displayMode.RefreshRate == 0)
-                    {
-                        sprintf(szBuffer, "%d x %d %s", displayMode.Width, displayMode.Height, szFormat);
-                    }
-                    else
-                    {
-                        sprintf(szBuffer, "%d x %d %s (%d hz)", displayMode.Width, displayMode.Height, szFormat, displayMode.RefreshRate);
-                    }
+						/*! if current mode is the configured video resolution, activate it in the list */
+						if(strcmp(szBuffer, g_XBVideo.GetVideoResolution()) == 0)
+						{
+							dwVideoResolution = v+1;
+						}
 
-                    /*! if current mode is the configured video resolution, activate it in the list */
-                    if(strcmp(szBuffer, g_XBVideo.GetVideoResolution()) == 0)
-                    {
-                        dwVideoResolution = v+1;
-                    }
-
-                    SendMessage(g_hVideoResolution, CB_ADDSTRING, 0, (LPARAM)szBuffer);
-                }
-            }
+						SendMessage(g_hVideoResolution, CB_ADDSTRING, 0, (LPARAM)szBuffer);
+					}
+				}
+			}
         }
     }
 

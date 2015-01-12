@@ -35,10 +35,20 @@
 #define EMUD3D8TYPES_H
 
 // include direct3d 8x headers
-#define DIRECT3D_VERSION 0x0800
-#include <d3d8.h>
-#include <d3dx8tex.h>
-#include <d3d8types.h>
+#define DIRECT3D_VERSION 0x0900
+#include <d3d9.h>
+#include <d3dx9tex.h>
+#include <d3d9types.h>
+#define IDirect3DSurface8 IDirect3DSurface9
+#define IDirect3DResource8     IDirect3DResource9     
+#define IDirect3DBaseTexture8  IDirect3DBaseTexture9  
+#define IDirect3DTexture8      IDirect3DTexture9      
+#define IDirect3DVolumeTexture8 IDirect3DVolumeTexture9
+#define IDirect3DCubeTexture8  IDirect3DCubeTexture9  
+#define IDirect3DSurface8      IDirect3DSurface9      
+#define IDirect3DVertexBuffer8 IDirect3DVertexBuffer9 
+#define IDirect3DIndexBuffer8  IDirect3DIndexBuffer9  
+#define IDirect3DDevice8 IDirect3DDevice9
 
 // TODO: fill out these enumeration tables for convienance
 typedef DWORD X_D3DFORMAT;

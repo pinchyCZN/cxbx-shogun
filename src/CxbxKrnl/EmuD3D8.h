@@ -40,7 +40,17 @@
 #include "Emu.h"
 
 #define DIRECTDRAW_VERSION 0x0700
-#include <ddraw.h>
+//#include <ddraw.h>
+#include <d3d9caps.h>
+#define D3DCAPS8 D3DCAPS9
+#define D3DVIEWPORT8 D3DVIEWPORT9
+#define D3DLIGHT8 D3DLIGHT9
+#define D3DMATERIAL8 D3DMATERIAL9
+#define D3DADAPTER_IDENTIFIER8 D3DADAPTER_IDENTIFIER9
+#define LPDIRECT3DDEVICE8 LPDIRECT3DDEVICE9
+#define LPDIRECT3D8 LPDIRECT3D9
+#define Direct3DCreate8 Direct3DCreate9
+#define D3DENUM_NO_WHQL_LEVEL D3DENUM_WHQL_LEVEL
 
 // initialize direct3d
 extern VOID EmuD3DInit(Xbe::Header *XbeHeader, uint32 XbeHeaderSize);
