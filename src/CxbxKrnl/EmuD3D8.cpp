@@ -58,6 +58,7 @@ namespace xboxkrnl
 
 #include <process.h>
 #include <clocale>
+#include <ddraw.h>
 
 // Global(s)
 HWND                                g_hEmuWindow   = NULL; // rendering window
@@ -65,10 +66,23 @@ HWND                                g_hEmuWindow   = NULL; // rendering window
 XTL::LPDIRECT3DDEVICE8              g_pD3DDevice   = NULL; // Direct3D Device
 #else
 XTL::LPDIRECT3DDEVICE9              g_pD3DDevice   = NULL; // Direct3D Device
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif
-XTL::LPDIRECTDRAWSURFACE7           g_pDDSPrimary  = NULL; // DirectDraw7 Primary Surface
-XTL::LPDIRECTDRAWSURFACE7           g_pDDSOverlay7 = NULL; // DirectDraw7 Overlay Surface
-XTL::LPDIRECTDRAWCLIPPER            g_pDDClipper   = NULL; // DirectDraw7 Clipper
+LPDIRECTDRAWSURFACE7           g_pDDSPrimary  = NULL; // DirectDraw7 Primary Surface
+LPDIRECTDRAWSURFACE7           g_pDDSOverlay7 = NULL; // DirectDraw7 Overlay Surface
+LPDIRECTDRAWCLIPPER            g_pDDClipper   = NULL; // DirectDraw7 Clipper
 DWORD                               g_CurrentVertexShader = 0;
 DWORD								g_dwCurrentPixelShader = 0;
 XTL::PIXEL_SHADER                  *g_CurrentPixelShader = NULL;
@@ -94,7 +108,7 @@ static XTL::LPDIRECT3D8             g_pD3D          = NULL; // Direct3D instance
 static XTL::LPDIRECT3D9             g_pD3D          = NULL; // Direct3D instance
 #endif
 static BOOL                         g_bSupportsYUY2 = FALSE;// Does device support YUY2 overlays?
-static XTL::LPDIRECTDRAW7           g_pDD7          = NULL; // DirectDraw7
+static LPDIRECTDRAW7           g_pDD7          = NULL; // DirectDraw7
 static DWORD                        g_dwOverlayW    = 640;  // Cached Overlay Width
 static DWORD                        g_dwOverlayH    = 480;  // Cached Overlay Height
 static DWORD                        g_dwOverlayP    = 640;  // Cached Overlay Pitch
@@ -935,14 +949,14 @@ static DWORD WINAPI EmuCreateDeviceProxy(LPVOID)
                 ZeroMemory(&g_ddguid, sizeof(GUID));
 
                 // enumerate device guid for this monitor, for directdraw
-                HRESULT hRet = XTL::DirectDrawEnumerateExA(EmuEnumDisplayDevices, NULL, DDENUM_ATTACHEDSECONDARYDEVICES);
+                HRESULT hRet = DirectDrawEnumerateExA(EmuEnumDisplayDevices, NULL, DDENUM_ATTACHEDSECONDARYDEVICES);
 
                 // create DirectDraw7
                 {
                     if(FAILED(hRet))
-                        hRet = XTL::DirectDrawCreateEx(NULL, (void**)&g_pDD7, XTL::IID_IDirectDraw7, NULL);
+                        hRet = DirectDrawCreateEx(NULL, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
                     else
-                        hRet = XTL::DirectDrawCreateEx(&g_ddguid, (void**)&g_pDD7, XTL::IID_IDirectDraw7, NULL);
+                        hRet = DirectDrawCreateEx(&g_ddguid, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
 
                     if(FAILED(hRet))
                         CxbxKrnlCleanup("Could not initialize DirectDraw7");
@@ -993,7 +1007,7 @@ static DWORD WINAPI EmuCreateDeviceProxy(LPVOID)
                 // initialize primary surface
                 if(g_bSupportsYUY2)
                 {
-                    XTL::DDSURFACEDESC2 ddsd2;
+                    DDSURFACEDESC2 ddsd2;
 
                     ZeroMemory(&ddsd2, sizeof(ddsd2));
 
@@ -6598,7 +6612,7 @@ VOID WINAPI XTL::EmuIDirect3DDevice8_EnableOverlay
         // initialize overlay surface
         if(g_bSupportsYUY2)
         {
-            XTL::DDSURFACEDESC2 ddsd2;
+            DDSURFACEDESC2 ddsd2;
 
             ZeroMemory(&ddsd2, sizeof(ddsd2));
 
@@ -6607,7 +6621,7 @@ VOID WINAPI XTL::EmuIDirect3DDevice8_EnableOverlay
             ddsd2.ddsCaps.dwCaps = DDSCAPS_OVERLAY;
             ddsd2.dwWidth = g_dwOverlayW;
             ddsd2.dwHeight = g_dwOverlayH;
-            ddsd2.ddpfPixelFormat.dwSize = sizeof(XTL::DDPIXELFORMAT);
+            ddsd2.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
             ddsd2.ddpfPixelFormat.dwFlags = DDPF_FOURCC;
             ddsd2.ddpfPixelFormat.dwFourCC = MAKEFOURCC('Y','U','Y','2');
 
