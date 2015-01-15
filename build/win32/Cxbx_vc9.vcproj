@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libjpeg.lib d3d9.lib dinput8.lib dxguid.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="libjpeg.lib d3d9.lib dinput8.lib dxguid.lib odbc32.lib odbccp32.lib C:\Program Files (x86)\Microsoft Visual Studio\VC98\Lib\DDRAW.LIB"
 				OutputFile=".\..\..\bin\debug/Cxbx.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

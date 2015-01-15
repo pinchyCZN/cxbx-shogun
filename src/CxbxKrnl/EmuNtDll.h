@@ -114,7 +114,9 @@ typedef CONST WCHAR        *LPCWSTR, *PCWSTR;
 typedef long                            NTSTATUS;
 typedef unsigned __int64                ULONGLONG;
 
-#define NT_SUCCESS(Status)              ((NTSTATUS) (Status) >= 0)
+#ifndef NT_SUCCESS
+#define NT_SUCCESS(Status)              ((long) (Status) >= 0)
+#endif
 
 // ******************************************************************
 // * calling conventions

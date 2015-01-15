@@ -60,6 +60,7 @@ namespace NtDll
 #include "ResourceTracker.h"
 
 #pragma warning(disable:4005) // Ignore redefined status values
+typedef long                            NTSTATUS;
 #include <ntstatus.h>
 #pragma warning(default:4005)
 
