@@ -174,7 +174,7 @@
 				OutputFile=".\..\..\bin\debug/CxbxKrnl.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Lib\x86&quot;"
+				AdditionalLibraryDirectories=".\bin\debug\;&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Lib\x86&quot;"
 				IgnoreDefaultLibraryNames="libci.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\bin\debug/CxbxKrnl.pdb"

@@ -737,6 +737,25 @@ static DWORD WINAPI EmuUpdateTickCount(LPVOID)
     timeEndPeriod(0);
 }
 
+HRESULT (WINAPI *_DirectDrawCreateEx)( GUID FAR * lpGuid, LPVOID  *lplpDD, REFIID  iid,IUnknown FAR *pUnkOuter );
+HRESULT (WINAPI *_DirectDrawEnumerateExA)( LPDDENUMCALLBACKEXA lpCallback, LPVOID lpContext, DWORD dwFlags);
+
+static int LoadDDRAW()
+{
+	static HMODULE hmodule=0;
+	//WINAPI
+	if(!hmodule)
+		hmodule=LoadLibrary(TEXT("ddraw.dll"));
+	if(hmodule){
+		_DirectDrawCreateEx=(HRESULT (__stdcall *)(GUID *,LPVOID *,const IID &,IUnknown *))GetProcAddress(hmodule,TEXT("DirectDrawCreateEx"));
+		_DirectDrawEnumerateExA=(HRESULT (__stdcall *)(LPDDENUMCALLBACKEXA,LPVOID,DWORD))GetProcAddress(hmodule,TEXT("DirectDrawEnumerateExA"));
+	}
+	if((_DirectDrawCreateEx!=0) && (_DirectDrawEnumerateExA!=0))
+		return TRUE;
+	else
+		return FALSE;
+}
+
 // thread dedicated to create devices
 static DWORD WINAPI EmuCreateDeviceProxy(LPVOID)
 {
@@ -949,14 +968,14 @@ static DWORD WINAPI EmuCreateDeviceProxy(LPVOID)
                 ZeroMemory(&g_ddguid, sizeof(GUID));
 
                 // enumerate device guid for this monitor, for directdraw
-                HRESULT hRet = DirectDrawEnumerateExA(EmuEnumDisplayDevices, NULL, DDENUM_ATTACHEDSECONDARYDEVICES);
+                HRESULT hRet = _DirectDrawEnumerateExA(EmuEnumDisplayDevices, NULL, DDENUM_ATTACHEDSECONDARYDEVICES);
 
                 // create DirectDraw7
                 {
                     if(FAILED(hRet))
-                        hRet = DirectDrawCreateEx(NULL, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
+                        hRet = _DirectDrawCreateEx(NULL, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
                     else
-                        hRet = DirectDrawCreateEx(&g_ddguid, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
+                        hRet = _DirectDrawCreateEx(&g_ddguid, (void**)&g_pDD7, IID_IDirectDraw7, NULL);
 
                     if(FAILED(hRet))
                         CxbxKrnlCleanup("Could not initialize DirectDraw7");
