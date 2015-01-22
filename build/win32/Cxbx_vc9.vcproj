@@ -80,7 +80,7 @@
 				OutputFile=".\..\..\bin\debug/Cxbx.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\import\libjpeg\win32\lib;&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Lib\x86&quot;"
+				AdditionalLibraryDirectories="..\..\bin\debug;..\..\import\libjpeg\win32\lib;&quot;C:\Program Files (x86)\Microsoft DirectX SDK\Lib\x86&quot;"
 				IgnoreDefaultLibraryNames="msvcrt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\bin\debug/Cxbx.pdb"
